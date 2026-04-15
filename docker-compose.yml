@@ -7,11 +7,11 @@ services:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      - POSTGRES_HOST=localhost
-      - POSTGRES_PORT=15432
-      - POSTGRES_DBNAME=ihanoi
-      - POSTGRES_USERNAME=ihanoibe
-      - POSTGRES_PASSWORD=apppassword123312**
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+      - MYSQL_DBNAME=ecommerce
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
       - SEAWEED_MASTER_IP=http://localhost
       - SEAWEED_MASTER_PORT=9333
       - SERVER_PUBLIC_URL=https://api.cds.interits.vn

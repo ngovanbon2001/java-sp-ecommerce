@@ -62,7 +62,7 @@ public class Department {
     private OffsetDateTime deletedAt;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    private List<String> staffDepartments = new ArrayList<>();
+    private List<StaffDepartment> staffDepartments = new ArrayList<>();
 
     // public void addStaffDepartment(StaffDepartment staffDepartment) {
     //     staffDepartments.add(staffDepartment);

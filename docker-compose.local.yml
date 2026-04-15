@@ -1,14 +1,15 @@
 version: '3'
 services:
-  postgres:
-    image: postgres:16
-    container_name: postgres
+  mysql:
+    image: mysql:8
+    container_name: mysql
     restart: unless-stopped
     environment:
-      POSTGRES_USER: tuyennt
-      POSTGRES_PASSWORD: tuyennt
-      POSTGRES_DB: ihanoi
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root 
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./mysql-data:/var/lib/mysql

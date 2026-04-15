@@ -91,6 +91,6 @@ public class User {
     private ZonedDateTime readAllWarningsAt;
 
     @OneToMany(mappedBy = "user")
-    private List<String> staffDepartments = new ArrayList<>();
+    private List<StaffDepartment> staffDepartments = new ArrayList<>();
 
 }
