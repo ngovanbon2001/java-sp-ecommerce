@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local runtime logs / certs ###
+logs/application.log
+src/main/resources/cert_lab/server.crt
+src/main/resources/cert_lab/client.key
