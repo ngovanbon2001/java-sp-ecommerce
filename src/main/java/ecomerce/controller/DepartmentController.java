@@ -3,7 +3,6 @@ package ecomerce.controller;
 import ecomerce.common.BasePagingResponse;
 import ecomerce.common.BaseResponse;
 import ecomerce.dto.department.*;
-import ihanoi.ihanoi_backend.dto.department.*;
 import ecomerce.exception.BizException;
 import ecomerce.service.DepartmentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
