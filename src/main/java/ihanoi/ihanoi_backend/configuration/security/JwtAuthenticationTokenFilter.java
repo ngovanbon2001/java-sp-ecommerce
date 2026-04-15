@@ -5,11 +5,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ihanoi.ihanoi_backend.bo.AdminUserDetails;
 import ihanoi.ihanoi_backend.common.Const;
-import ihanoi.ihanoi_backend.dto.vneid.VneidUserInfo;
 import ihanoi.ihanoi_backend.entity.User;
 import ihanoi.ihanoi_backend.exception.BizException;
 import ihanoi.ihanoi_backend.service.UserService;
-import ihanoi.ihanoi_backend.service.VneidService;
 import ihanoi.ihanoi_backend.util.DateTimeUtils;
 import ihanoi.ihanoi_backend.util.JwtTokenUtil;
 import ihanoi.ihanoi_backend.util.RequestMatchers;
@@ -44,9 +42,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private UserService userService;
 
     @Autowired
-    private VneidService vneidService;
-
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Value("${jwt.tokenHeader}")
@@ -76,49 +71,49 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         DecodedJWT jwt = JWT.decode(authToken); // chỉ decode, không verify
         String issuer = jwt.getIssuer();
         if (issuer != null) {
-            try {
-                VneidUserInfo userInfo = vneidService.getVneidUserInfo(authToken);
-                if (userInfo == null) {
-                    failedAuthentication(response, "Không thể xác thực token", HttpStatus.UNAUTHORIZED.value());
-                    return;
-                }
-                User user = userService.findByCitizenId(userInfo.getCitizenPid());
-                if (user == null) {
-                    user = new User();
-                    user.setCitizenNumber(userInfo.getCitizenPid());
-                    user.setFullname(userInfo.getFullName());
-                    user.setPhoneNumber("");
-                    user.setUsername("");
-                    user.setPassword("");
-                    user.setAddress("");
-                    user.setRole(Const.User.Role.STANDARD);
-                    user.setVerified((short) 0);
-                    user.setWardCode("-1");
-                    user.setBirthday(DateTimeUtils.parseDate(userInfo.getBirthDate(), "dd-MM-yyyy").toLocalDate());
-                }else {
-                    user.setFullname(userInfo.getFullName());
-                    user.setBirthday(DateTimeUtils.parseDate(userInfo.getBirthDate(), "dd-MM-yyyy").toLocalDate());
-                    user.setCitizenNumber(userInfo.getCitizenPid());
-                }
-                userService.save(user);
+//             try {
+//                 VneidUserInfo userInfo = vneidService.getVneidUserInfo(authToken);
+//                 if (userInfo == null) {
+//                     failedAuthentication(response, "Không thể xác thực token", HttpStatus.UNAUTHORIZED.value());
+//                     return;
+//                 }
+//                 User user = userService.findByCitizenId(userInfo.getCitizenPid());
+//                 if (user == null) {
+//                     user = new User();
+//                     user.setCitizenNumber(userInfo.getCitizenPid());
+//                     user.setFullname(userInfo.getFullName());
+//                     user.setPhoneNumber("");
+//                     user.setUsername("");
+//                     user.setPassword("");
+//                     user.setAddress("");
+//                     user.setRole(Const.User.Role.STANDARD);
+//                     user.setVerified((short) 0);
+//                     user.setWardCode("-1");
+//                     user.setBirthday(DateTimeUtils.parseDate(userInfo.getBirthDate(), "dd-MM-yyyy").toLocalDate());
+//                 }else {
+//                     user.setFullname(userInfo.getFullName());
+//                     user.setBirthday(DateTimeUtils.parseDate(userInfo.getBirthDate(), "dd-MM-yyyy").toLocalDate());
+//                     user.setCitizenNumber(userInfo.getCitizenPid());
+//                 }
+//                 userService.save(user);
 
-//                if(user.getStatus() == 0){
-//                    failedAuthentication(response, "Chưa cập nhật thông tin tài khoản", HttpStatus.UNAUTHORIZED.value());
-//                    return;
-//                }
+// //                if(user.getStatus() == 0){
+// //                    failedAuthentication(response, "Chưa cập nhật thông tin tài khoản", HttpStatus.UNAUTHORIZED.value());
+// //                    return;
+// //                }
 
-                AdminUserDetails adminUserDetails = new AdminUserDetails(user);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(adminUserDetails, null, adminUserDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                log.info("authenticated user:{}", username);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                chain.doFilter(request, response);
+//                 AdminUserDetails adminUserDetails = new AdminUserDetails(user);
+//                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(adminUserDetails, null, adminUserDetails.getAuthorities());
+//                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+// //                log.info("authenticated user:{}", username);
+//                 SecurityContextHolder.getContext().setAuthentication(authentication);
+//                 chain.doFilter(request, response);
 
-                return;
-            } catch (BizException e) {
-                failedAuthentication(response, "Dịch vụ xác thực trả về lỗi " + e.getMessage(), HttpStatus.UNAUTHORIZED.value());
-                return;
-            }
+//                 return;
+//             } catch (BizException e) {
+//                 failedAuthentication(response, "Dịch vụ xác thực trả về lỗi " + e.getMessage(), HttpStatus.UNAUTHORIZED.value());
+//                 return;
+//             }
         }else {
             String username = jwtTokenUtil.getUserNameFromToken(authToken);
             if (username == null) {

@@ -62,19 +62,19 @@ public class Department {
     private OffsetDateTime deletedAt;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    private List<StaffDepartment> staffDepartments = new ArrayList<>();
+    private List<String> staffDepartments = new ArrayList<>();
 
-    public void addStaffDepartment(StaffDepartment staffDepartment) {
-        staffDepartments.add(staffDepartment);
-        staffDepartment.setDepartment(this);
-    }
+    // public void addStaffDepartment(StaffDepartment staffDepartment) {
+    //     staffDepartments.add(staffDepartment);
+    //     staffDepartment.setDepartment(this);
+    // }
 
-    @OneToMany(mappedBy = "administrator", cascade = CascadeType.ALL)
-    private Set<WardAdministrator> wardAdministrators;
+    // @OneToMany(mappedBy = "administrator", cascade = CascadeType.ALL)
+    // private Set<WardAdministrator> wardAdministrators;
 
-    public Set<Ward> getWards() {
-        return wardAdministrators.stream()
-                .map(WardAdministrator::getWard)
-                .collect(Collectors.toSet());
-    }
+    // public Set<Ward> getWards() {
+    //     return wardAdministrators.stream()
+    //             .map(WardAdministrator::getWard)
+    //             .collect(Collectors.toSet());
+    // }
 }

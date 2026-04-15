@@ -3,7 +3,6 @@ package ihanoi.ihanoi_backend.controller;
 import ihanoi.ihanoi_backend.common.BasePagingResponse;
 import ihanoi.ihanoi_backend.common.BaseResponse;
 import ihanoi.ihanoi_backend.dto.department.*;
-import ihanoi.ihanoi_backend.dto.user.UpdatingDepartmentDto;
 import ihanoi.ihanoi_backend.exception.BizException;
 import ihanoi.ihanoi_backend.service.DepartmentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,7 +58,7 @@ public class DepartmentController {
     }
 
     @PutMapping("/{departmentId}")
-    public BaseResponse<DepartmentDto> updateDepartment(@PathVariable Long departmentId, @Valid @RequestBody UpdatingDepartmentDto updatingDepartmentDto) throws BizException {
+    public BaseResponse<DepartmentDto> updateDepartment(@PathVariable Long departmentId, @Valid @RequestBody DepartmentDto updatingDepartmentDto) throws BizException {
         return BaseResponse.success(this.departmentService.updateDepartment(departmentId, updatingDepartmentDto));
     }
 

@@ -1,7 +1,6 @@
 package ihanoi.ihanoi_backend.entity;
 
 import ihanoi.ihanoi_backend.common.Const;
-import ihanoi.ihanoi_backend.dto.FileUploadResponse;
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -78,7 +77,7 @@ public class User {
     @Type(JsonBinaryType.class)
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "avatar", columnDefinition = "jsonb")
-    private FileUploadResponse avatar;
+    private String avatar;
 
     @Size(max = 10)
     @Column(name = "gender", length = 10)
@@ -92,6 +91,6 @@ public class User {
     private ZonedDateTime readAllWarningsAt;
 
     @OneToMany(mappedBy = "user")
-    private List<StaffDepartment> staffDepartments = new ArrayList<>();
+    private List<String> staffDepartments = new ArrayList<>();
 
 }

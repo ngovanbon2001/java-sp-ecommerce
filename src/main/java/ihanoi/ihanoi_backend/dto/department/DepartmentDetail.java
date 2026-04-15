@@ -3,7 +3,6 @@ package ihanoi.ihanoi_backend.dto.department;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import ihanoi.ihanoi_backend.dto.WardDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +26,7 @@ public class DepartmentDetail {
 
     private List<User> users;
 
-    private List<WardDto> wards;
+    private List<String> wards;
 
     @Data
     @Builder
