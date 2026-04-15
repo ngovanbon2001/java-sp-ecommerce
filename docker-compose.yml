@@ -1,0 +1,27 @@
+version: '3'
+services:
+  ihanoi_be:
+    container_name: ihanoi-be
+    image: ihanoi-be
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=15432
+      - POSTGRES_DBNAME=ihanoi
+      - POSTGRES_USERNAME=ihanoibe
+      - POSTGRES_PASSWORD=apppassword123312**
+      - SEAWEED_MASTER_IP=http://localhost
+      - SEAWEED_MASTER_PORT=9333
+      - SERVER_PUBLIC_URL=https://api.cds.interits.vn
+      - VNEID_API_KEY=${VNEID_API_KEY}
+      - VNEID_CLIENT_ID=${VNEID_CLIENT_ID}
+      - VNEID_CLIENT_SECRET=${VNEID_CLIENT_SECRET}
+      - VNEID_TARGET_CODE=${VNEID_TARGET_CODE}
+    ports:
+      - "8000:8000"
+    network_mode: host
+#networks:
+#  cds_my-network:
+#    external: true

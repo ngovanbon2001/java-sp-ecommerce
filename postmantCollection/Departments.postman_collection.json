@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "77e39dc2-122a-4931-b248-a3c1be71275e",
+		"name": "Departments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9140253",
+		"_collection_link": "https://www.postman.com/dinhphien/workspace/paypal/collection/9140253-77e39dc2-122a-4931-b248-a3c1be71275e?action=share&source=collection_link&creator=9140253"
+	},
+	"item": [
+		{
+			"name": "create-department",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMzQ0OTYwODg3IiwiY3JlYXRlZCI6MTc1MzcwNzcwMiwiZXhwIjoxNzUzNzExMzAyfQ.njhQeCP4SNQ_ICYnbySWVp31Z4AHLCv3XlvfDh2ioIg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Department 3\",\n    \"description\": \"This is the root department\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/departments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"departments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-sub-departments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMzQ0OTYwODgyIiwiY3JlYXRlZCI6MTc1MzcxNjM4MywiZXhwIjoxNzUzNzE5OTgzfQ.M2FffEb-GmJCOkxsSYQ97SlahFMuCh3gEnQDKKvxrCc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Sub Department 4\",\n    \"description\": \"This is the fourth sub department\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/departments/72/sub-departments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"departments",
+						"72",
+						"sub-departments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view-sub-departments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:authorization-secret}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Sub Department 5\",\n    \"admin_id\": 4,\n    \"staff_ids\": [\n        5,\n        6,\n        7,\n        8\n    ],\n    \"ward_codes\": [\n        \"10030\",\n        \"00025\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/departments/70/sub-departments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"departments",
+						"70",
+						"sub-departments"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

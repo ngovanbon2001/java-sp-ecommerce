@@ -1,0 +1,53 @@
+{
+	"info": {
+		"_postman_id": "07d8843f-8118-48b0-9e95-a35658584fff",
+		"name": "StaffDepartment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9140253",
+		"_collection_link": "https://www.postman.com/dinhphien/workspace/paypal/collection/9140253-07d8843f-8118-48b0-9e95-a35658584fff?action=share&source=collection_link&creator=9140253"
+	},
+	"item": [
+		{
+			"name": "add staff to department",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:authorization-secret}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"staff_department\": [\r\n        {\r\n            \"user_id\": 5,\r\n            \"role\": \"ADMIN\"\r\n        },\r\n        {\r\n            \"user_id\": 6,\r\n            \"role\": \"STAFF\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/departments/70/staff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"departments",
+						"70",
+						"staff"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

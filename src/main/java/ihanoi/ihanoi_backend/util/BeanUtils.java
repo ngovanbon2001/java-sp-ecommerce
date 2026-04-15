@@ -1,0 +1,56 @@
+package ihanoi.ihanoi_backend.util;
+
+import ihanoi.ihanoi_backend.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class BeanUtils implements ApplicationContextAware {
+
+	private static ApplicationContext context;
+
+	public static ApplicationContext getContext() {
+		return context;
+	}
+
+	public static void setContext(ApplicationContext context) {
+		BeanUtils.context = context;
+	}
+
+	public void setApplicationContext(ApplicationContext context) {
+		setContext(context);
+	}
+
+	public static <T> T getBean(Class<T> beanClass) {
+		if (getContext() == null)
+			throw new ResourceNotFoundException(BeanUtils.class.getName() + " - " + beanClass.getName());
+		return (T) getContext().getBean(beanClass);
+	}
+
+	public static <T> T getBean(Class<T> beanClass, T clazz) {
+		if (clazz != null)
+			return clazz;
+		log.info("getBean by class: [{}]", beanClass.getCanonicalName());
+		return getBean(beanClass);
+	}
+
+	public static <T> T getBean(String beanClass) {
+		if (getContext() == null)
+			throw new ResourceNotFoundException(BeanUtils.class.getName() + " - " + beanClass);
+		return (T) getContext().getBean(beanClass);
+	}
+
+	public static <T> T getBean(String beanClass, T clazz) {
+		if (clazz != null)
+			return clazz;
+		log.info("getBean by name: [{}]", beanClass);
+		return getBean(beanClass);
+	}
+	public static void copyProperties(Object source, Object target) throws BeansException {
+		org.springframework.beans.BeanUtils.copyProperties(source, target);
+	}
+}
