@@ -24,6 +24,7 @@ public class Const {
             "/api/v1/address/provinces",
             "/api/v1/file/download/**",
             "/callback/**",
+            "/api/v1/products/**"
     };
 
     public static class ResultCode {

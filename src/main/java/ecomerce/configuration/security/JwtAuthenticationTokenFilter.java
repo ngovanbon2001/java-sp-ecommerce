@@ -54,6 +54,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         if (RequestMatchers.chainRequestMatchers(request, whiteListMatchers)) {
+            log.debug("whiteListMatchers: {}", whiteListMatchers.toString());
+            logger.info("TEST DATA");
             chain.doFilter(request, response);
             return;
         }
@@ -138,6 +140,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private void failedAuthentication(HttpServletResponse response, String message, int statusCode) throws IOException {
 //        response.setHeader("error", message);
+        logger.info("Not Auth");
         response.setStatus(statusCode);
         Map<String, String> error = new HashMap<>();
         error.put("error_message", message);

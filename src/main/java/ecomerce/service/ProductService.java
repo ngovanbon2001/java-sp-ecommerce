@@ -9,7 +9,9 @@ import ecomerce.request.product.FilterRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductService {
     private final ProductRepository productRepository;
 
@@ -17,15 +19,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Page<ProductDetail> index(
-            FilterRequest filterRequest,
-            Pageable pageable
-    ) {
+    public Page<ProductDetail> index(FilterRequest filterRequest, Pageable pageable) {
 
-        Specification<Product> spec = ProductSpecification.filter(filterRequest);
+        Specification<Product> productSpecification = ProductSpecification.filter(filterRequest);
 
-         return this.productRepository.findAll(spec, pageable).map(
-                 ProductMapper.INSTANCE::entityToDto
-         );
+        return this.productRepository.findAll(productSpecification, pageable).map(ProductMapper.INSTANCE::entityToDto);
     }
 }
