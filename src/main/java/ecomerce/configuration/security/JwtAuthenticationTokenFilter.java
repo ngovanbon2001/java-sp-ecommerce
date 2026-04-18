@@ -53,20 +53,33 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
-        if (RequestMatchers.chainRequestMatchers(request, whiteListMatchers)) {
-            chain.doFilter(request, response);
-            return;
-        }
-        String authHeader = request.getHeader(this.tokenHeader);
-        if (StringUtils.isBlank(authHeader) || !authHeader.startsWith("Bearer ")) {
-            failedAuthentication(response, "No token provided!", HttpStatus.UNAUTHORIZED.value());
-            return;
-        }
+        try {
+            if (RequestMatchers.chainRequestMatchers(request, whiteListMatchers)) {
+                chain.doFilter(request, response);
+                return;
+            }
+            String authHeader = request.getHeader(this.tokenHeader);
+            logger.debug("authHeader:" + authHeader);
+            if (StringUtils.isBlank(authHeader) || !authHeader.startsWith("Bearer ")) {
+                failedAuthentication(response, "No token provided!", HttpStatus.UNAUTHORIZED.value());
+                return;
+            }
 
-        String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
-        DecodedJWT jwt = JWT.decode(authToken); // chỉ decode, không verify
-        String issuer = jwt.getIssuer();
-        if (issuer != null) {
+            String authToken = authHeader
+                    .substring("Bearer ".length())
+                    .trim();// The part after "Bearer "
+
+            logger.debug("authHeader=[" + authHeader + "]");
+            logger.debug("authToken=[" + authToken + "]");
+            logger.debug("first char=" + (int) authToken.charAt(0));
+            logger.debug("last char=" + (int) authToken.charAt(authToken.length() - 1));
+
+            DecodedJWT jwt = JWT.decode(authToken); // chỉ decode, không verify
+            logger.debug("DecodedJWT" + jwt);
+
+            String issuer = jwt.getIssuer();
+            logger.debug("issuer" + issuer);
+            if (issuer != null) {
 //             try {
 //                 VneidUserInfo userInfo = vneidService.getVneidUserInfo(authToken);
 //                 if (userInfo == null) {
@@ -110,34 +123,43 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 //                 failedAuthentication(response, "Dịch vụ xác thực trả về lỗi " + e.getMessage(), HttpStatus.UNAUTHORIZED.value());
 //                 return;
 //             }
-        }else {
-            String username = jwtTokenUtil.getUserNameFromToken(authToken);
-            if (username == null) {
-                failedAuthentication(response, "Token is invalid!", HttpStatus.UNAUTHORIZED.value());
-                return;
-            }
+            }else {
+                String username = jwtTokenUtil.getUserNameFromToken(authToken);
+                if (username == null) {
+                    failedAuthentication(response, "Token is invalid!", HttpStatus.UNAUTHORIZED.value());
+                    return;
+                }
 
 //            log.info("checking username:{}", username);
-            UserDetails userDetails = this.userService.findByUsername(username);
-            if (userDetails == null) {
-                failedAuthentication(response, "User not found!", HttpStatus.UNAUTHORIZED.value());
-                return;
-            }
+                UserDetails userDetails = this.userService.findByEmail(username);
+                if (userDetails == null) {
+                    failedAuthentication(response, "User not found!", HttpStatus.UNAUTHORIZED.value());
+                    return;
+                }
 
-            if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 //                log.info("authenticated user:{}", username);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                chain.doFilter(request, response);
-                return;
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    chain.doFilter(request, response);
+                    return;
+                }
             }
+            failedAuthentication(response, "Token is expired or invalid!", HttpStatus.UNAUTHORIZED.value());
+        } catch (Exception e) {
+            logger.error("JWT ERROR", e);
+
+            failedAuthentication(response,
+                    "Invalid token: " + e.getMessage(),
+                    HttpStatus.UNAUTHORIZED.value());
+            return;
         }
-        failedAuthentication(response, "Token is expired or invalid!", HttpStatus.UNAUTHORIZED.value());
     }
 
     private void failedAuthentication(HttpServletResponse response, String message, int statusCode) throws IOException {
 //        response.setHeader("error", message);
+        logger.info("Not Auth");
         response.setStatus(statusCode);
         Map<String, String> error = new HashMap<>();
         error.put("error_message", message);

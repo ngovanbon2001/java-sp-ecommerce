@@ -157,7 +157,7 @@ public class DepartmentService {
             Pageable pageable
     ) {
 
-        // DepartmentSpecification departmentSpecification = new DepartmentSpecification(searchDepartmentCriteria);
+//         DepartmentSpecification departmentSpecification = new DepartmentSpecification(searchDepartmentCriteria);
 
         // return this.departmentRepository.findAll(departmentSpecification, pageable).map(
         //         DepartmentMapper.INSTANCE::entityToDto

@@ -1,6 +1,14 @@
 package ecomerce.controller;
 
+import ecomerce.common.BaseResponse;
+import ecomerce.common.Const;
+import ecomerce.dto.user.JwtTokenResponse;
+import ecomerce.exception.BizException;
+import ecomerce.request.user.UserLoginRequest;
+import ecomerce.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -17,12 +25,11 @@ public class UserController {
     // @Value("${jwt.tokenHeader}")
     // private String tokenHeader;
 
-    // private final UserService userService;
+     private final UserService userService;
 
-    // public UserController(UserService userService, VneidService vneidService) {
-    //     this.userService = userService;
-    //     this.vneidService = vneidService;
-    // }
+     public UserController(UserService userService) {
+         this.userService = userService;
+     }
 
     // @PostMapping("register")
     // @Operation(summary = "Đăng kí", description = "Dành cho người dùng thường", tags = {"user"})
@@ -30,12 +37,13 @@ public class UserController {
     //     return BaseResponse.success(userService.register(createUserDto));
     // }
 
-    // @PostMapping("login")
-    // @Operation(summary = "Đăng nhập", description = "Dành cho người dùng thường", tags = {"user"})
-    // public BaseResponse<JwtTokenResponse> login(@Valid @RequestBody UserLoginDto userLoginDto) throws BizException {
-    //     String token = userService.login(userLoginDto.getPhoneNumber(), userLoginDto.getPassword());
-    //     return BaseResponse.success(new JwtTokenResponse(token));
-    // }
+     @PostMapping("/login")
+     @Operation(summary = "Đăng nhập", description = "Dành cho người dùng thường", tags = {"user"})
+     public BaseResponse<JwtTokenResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest) throws BizException {
+         String token = userService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+         String refreshToken = userService.refreshToken(token);
+         return BaseResponse.success(new JwtTokenResponse(token, refreshToken, Const.TYPE_TOKEN));
+     }
 
     // @GetMapping("user-profile")
     // @Operation(summary = "Thông tin cá nhân", description = "Dành cho người dùng thường", tags = {"user"})

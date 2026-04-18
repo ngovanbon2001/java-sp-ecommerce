@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
@@ -30,8 +28,8 @@ public class UserService {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    public String login(String phoneNumber, String password) throws BizException {
-        UserDetails userDetails = findByUsername(phoneNumber);
+    public String login(String email, String password) throws BizException {
+        UserDetails userDetails = findByEmail(email);
         if (userDetails == null) throw new BizException("Tài khoản không tồn tại");
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BizException("Mật khẩu không đúng");
@@ -46,8 +44,8 @@ public class UserService {
         return jwtTokenUtil.refreshHeadToken(token);
     }
 
-    public AdminUserDetails findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+    public AdminUserDetails findByEmail(String username) {
+        User user = userRepository.findByEmail(username);
         if (user == null) return null;
         return new AdminUserDetails(user);
     }
