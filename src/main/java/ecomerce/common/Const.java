@@ -23,8 +23,7 @@ public class Const {
             "/api/v1/user/sso-token",
             "/api/v1/address/provinces",
             "/api/v1/file/download/**",
-            "/callback/**",
-            "/api/v1/products/**"
+            "/callback/**"
     };
 
     public static class ResultCode {
@@ -169,4 +168,5 @@ public class Const {
         }
     }
 
+    public static final String TYPE_TOKEN = "Bearer";
 }
