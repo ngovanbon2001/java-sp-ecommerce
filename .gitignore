@@ -32,7 +32,14 @@ build/
 ### VS Code ###
 .vscode/
 
+.build.log
+docker-run.log
+build.log
+
 ### Local runtime logs / certs ###
 logs/application.log
 src/main/resources/cert_lab/server.crt
 src/main/resources/cert_lab/client.key
+
+### Docker local data ###
+mysql-data/

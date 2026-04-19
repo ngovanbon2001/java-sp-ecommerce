@@ -7,11 +7,17 @@ services:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      - MYSQL_HOST=localhost
+      - SERVER_PORT=8081
+      - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
       - MYSQL_DBNAME=ecommerce
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=root
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_USERNAME=
+      - MAIL_PASSWORD=
+      - MAIL_FROM=noreply@ecommerce-java.local
       - SEAWEED_MASTER_IP=http://localhost
       - SEAWEED_MASTER_PORT=9333
       - SERVER_PUBLIC_URL=https://api.cds.interits.vn
@@ -20,8 +26,30 @@ services:
       - VNEID_CLIENT_SECRET=${VNEID_CLIENT_SECRET}
       - VNEID_TARGET_CODE=${VNEID_TARGET_CODE}
     ports:
-      - "8000:8000"
-    network_mode: host
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - mailhog
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI for viewing emails
 #networks:
 #  cds_my-network:
 #    external: true

@@ -4,6 +4,7 @@ import ecomerce.common.Const;
 import ecomerce.configuration.security.JwtAuthenticationTokenFilter;
 import ecomerce.filter.AppleRedirectFilter;
 import ecomerce.filter.LoggingFilter;
+import ecomerce.security.OAuth2AuthenticationSuccessHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,17 +30,23 @@ public class SecurityConfiguration {
 
     private AppleRedirectFilter appleRedirectFilter;
 
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
 
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(withDefaults()).csrf(AbstractHttpConfigurer::disable);
-        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.authorizeHttpRequests(auth -> auth.requestMatchers(Const.AUTH_WHITELIST).permitAll());
+        // OAuth2 state uses session while APIs remain JWT protected.
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(Const.AUTH_WHITELIST).permitAll()
+                .anyRequest().authenticated());
+        // OAuth2 disabled for development - comment out if not needed
+        // http.oauth2Login(oauth2 -> oauth2.successHandler(oAuth2AuthenticationSuccessHandler));
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(loggingFilter, JwtAuthenticationTokenFilter.class);
         http.addFilterBefore(appleRedirectFilter, LoggingFilter.class);
-        http.authorizeHttpRequests().anyRequest().authenticated();
         return http.build();
     }
 
