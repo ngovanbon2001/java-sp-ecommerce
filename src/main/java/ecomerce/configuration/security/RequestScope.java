@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Scope(value = "request", proxyMode = ScopedProxyMode.DEFAULT)
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RequestScope {
     private int userId;

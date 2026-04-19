@@ -4,7 +4,6 @@ import ecomerce.configuration.security.JwtAuthenticationTokenFilter;
 import ecomerce.configuration.security.RestAuthenticationEntryPoint;
 import ecomerce.filter.AppleRedirectFilter;
 import ecomerce.filter.LoggingFilter;
-import ecomerce.util.JwtTokenUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,11 +42,6 @@ public class CommonSecurityConfig {
 //        return new IgnoreUrlsConfig();
 //    }
 //
-    @Bean
-    public JwtTokenUtil jwtTokenUtil() {
-        return new JwtTokenUtil();
-    }
-
     @Bean
     public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
         return new RestAuthenticationEntryPoint();
