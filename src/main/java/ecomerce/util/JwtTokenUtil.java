@@ -109,6 +109,7 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put("token_type", "access");
         return generateToken(claims);
     }
 
@@ -117,11 +118,17 @@ public class JwtTokenUtil {
         if (StringUtils.isEmpty(oldToken)) {
             return null;
         }
-        String token = oldToken.substring(tokenHead.length());
+        String token = oldToken;
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
+        token = token.trim();
+
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        //Token verification failed
         Map<String, Claim> claims = getClaimsFromToken(token);
         if (claims == null) {
             return null;
