@@ -28,69 +28,56 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 128)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 256)
+    private String phone;
+
+    private String permission;
+
+    private String active;
+
+    private String email;
+
+    @Column(name = "email_verified_at")
+    private LocalDateTime emailVerifiedAt;
+
     private String password;
 
-    @Column(name = "address", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "remember_token")
+    private String rememberToken;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(columnDefinition = "longtext")
     private String address;
 
-    @Column(name = "ward_code", nullable = false)
-    private String wardCode;
+    private LocalDate birthday;
+
+    @Column(name = "citizen_number")
+    private String citizenNumber;
+
+    private LocalDateTime created;
+
+    private String fullname;
+
+    private String gender;
 
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "fullname", nullable = false)
-    private String fullname;
-
-    @ColumnDefault("now()")
-    @Column(name = "created", nullable = false)
-    private LocalDateTime created;
-
-    @ColumnDefault("1")
-    @Column(name = "status", nullable = false)
-    private Short status;
-
-    @ColumnDefault("1")
-    @Column(name = "verified", nullable = false)
-    private Short verified;
-
-    @ColumnDefault("standard")
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Const.User.Role role;
-
-    @Size(max = 255)
-    @Column(name = "email")
-    private String email;
-
-    @Size(max = 255)
-    @Column(name = "citizen_number")
-    private String citizenNumber;
-
-    @Type(JsonBinaryType.class)
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "avatar", columnDefinition = "jsonb")
-    private String avatar;
-
-    @Size(max = 10)
-    @Column(name = "gender", length = 10)
-    private String gender;
-
-
-    @Column(name = "birthday")
-    private LocalDate birthday;
-
     @Column(name = "read_all_warnings_at")
-    private ZonedDateTime readAllWarningsAt;
+    private LocalDateTime readAllWarningsAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<StaffDepartment> staffDepartments = new ArrayList<>();
+    private Integer status;
 
+    private Integer verified;
+
+    @Column(name = "ward_code")
+    private String wardCode;
 }

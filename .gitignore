@@ -38,6 +38,7 @@ build.log
 
 ### Local runtime logs / certs ###
 logs/application.log
+logs/
 src/main/resources/cert_lab/server.crt
 src/main/resources/cert_lab/client.key
 
