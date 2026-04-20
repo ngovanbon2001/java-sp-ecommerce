@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "customers")
+@Table(name = "users")
 public class Customer {
 
     @Id
@@ -19,8 +19,8 @@ public class Customer {
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(name = "password_hash", length = 255)
-    private String passwordHash;
+    @Column(name = "password", length = 255)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 32)

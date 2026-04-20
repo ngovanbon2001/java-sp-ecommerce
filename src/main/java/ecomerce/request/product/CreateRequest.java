@@ -1,9 +1,6 @@
 package ecomerce.request.product;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -16,6 +13,7 @@ public class CreateRequest {
 
     @NotBlank(message = "name không được để trống")
     @Size(max = 255, message = "name tối đa 255 ký tự")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "name không được chứa ký tự đặc biệt")
     private String name;
 
     @Size(max = 255, message = "image_url tối đa 255 ký tự")

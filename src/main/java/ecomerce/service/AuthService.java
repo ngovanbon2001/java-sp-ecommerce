@@ -39,7 +39,7 @@ public class AuthService {
 
         Customer customer = new Customer();
         customer.setEmail(email);
-        customer.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        customer.setPassword(passwordEncoder.encode(request.getPassword()));
         customer.setRole(CustomerRole.ROLE_USER);
         customer.setProvider(CustomerProvider.LOCAL);
 
@@ -51,11 +51,11 @@ public class AuthService {
         Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new BizException("Invalid email or password"));
 
-        if (customer.getProvider() != CustomerProvider.LOCAL) {
-            throw new BizException("This account uses social login");
-        }
+//        if (customer.getProvider() != CustomerProvider.LOCAL) {
+//            throw new BizException("This account uses social login");
+//        }
 
-        if (customer.getPasswordHash() == null || !passwordEncoder.matches(request.getPassword(), customer.getPasswordHash())) {
+        if (customer.getPassword() == null || !passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
             throw new BizException("Invalid email or password");
         }
 
@@ -84,7 +84,7 @@ public class AuthService {
 
         otpService.verifyOtpAndConsume(email, request.getOtp());
 
-        customer.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        customer.setPassword(passwordEncoder.encode(request.getNewPassword()));
         customerRepository.save(customer);
     }
 

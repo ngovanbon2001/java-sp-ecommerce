@@ -25,7 +25,7 @@ public class CustomerPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return customer.getPasswordHash();
+        return customer.getPassword();
     }
 
     @Override
